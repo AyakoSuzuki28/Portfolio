@@ -1,0 +1,38 @@
+//mixinを登録します
+@use "variables" as *;
+
+
+// メディアクエリ
+@mixin mqMax {
+  @media screen and (max-width:768px) {
+    @content;
+  }
+}
+
+@mixin mqmax1040 {
+  @media screen and (max-width:1040px) {
+    @content;
+  }
+}
+
+
+
+@mixin hover{
+  &:hover{
+    @content;
+  }
+}
+
+@mixin flex($content,$items){
+  display: flex;
+  justify-content: $content;
+  align-items: $items;
+}
+
+@mixin text($size,$weight,$lh,$lts){
+  font-size: $size;
+  text-align: $weight;
+  line-height: $lh;
+  letter-spacing: $lts;
+}
+

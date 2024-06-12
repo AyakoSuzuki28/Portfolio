@@ -1,0 +1,1486 @@
+@use "../global" as *;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Zen Kaku Gothic Antique", sans-serif;
+}
+
+ul,
+li {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  cursor: none;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  color: $font;
+  background-color: $bgc;
+  position: relative;
+  cursor: none;
+  overflow: hidden;
+
+  @include mqMax {
+    width: 100vw;
+    animation: bugfix infinite;
+  }
+
+  &.remove-scrolling {
+    height: 100vh;
+    overflow-y: hidden;
+  }
+}
+
+@keyframes bugfix {
+  from {
+    padding: 0;
+  }
+
+  to {
+    padding: 0;
+  }
+}
+
+@-webkit-keyframes bugfix {
+  from {
+    padding: 0;
+  }
+
+  to {
+    padding: 0;
+  }
+}
+
+#cursor {
+  position: fixed;
+  background-color: #38e473;
+  border-radius: calc(15px / 2);
+  width: 15px;
+  height: 15px;
+  margin: -10px 0 0 -10px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.1s;
+
+  @include mqMax {
+    display: none;
+  }
+}
+
+#stalker {
+  position: fixed;
+  background-color: #38e473;
+  border-radius: 30px;
+  width: 60px;
+  height: 60px;
+  margin: -30px 0 0 -30px;
+  z-index: 998;
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.5s;
+
+  @include mqMax {
+    display: none;
+  }
+}
+
+#cursor.active,
+#stalker.active {
+  transform: scale(1.5);
+}
+
+.loaderWrapper {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background-color: $lightGreen;
+  z-index: 9999;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: calc(50% - 30px);
+  width: 60px;
+  aspect-ratio: 1;
+  background: $pink;
+  border-radius: 50%;
+  animation: l1 3s infinite linear;
+
+  @include mqMax {
+    top: 45%;
+  }
+}
+@keyframes l1 {
+  12.5% {
+    border-radius: 37% 63% 70% 30% / 30% 62% 38% 70%;
+  }
+  25% {
+    border-radius: 50% 50% 70% 30% / 52% 62% 38% 48%;
+  }
+  37.5% {
+    border-radius: 33% 67% 18% 82% / 52% 75% 25% 48%;
+  }
+  50% {
+    border-radius: 73% 27% 18% 82% / 52% 32% 68% 48%;
+  }
+  62.5% {
+    border-radius: 73% 27% 74% 26% / 64% 32% 68% 36%;
+  }
+  75% {
+    border-radius: 84% 16% 15% 85% / 55% 79% 21% 45%;
+  }
+  87.5% {
+    border-radius: 12% 88% 69% 31% / 10% 66% 34% 90%;
+  }
+}
+
+.siteHeader {
+  position: relative;
+  background-color: $lightGreen;
+  width: 100%;
+  overflow: hidden;
+  height: 84px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-left: 77px;
+  padding-right: 80px;
+  font-family: "Titillium Web", sans-serif;
+  color: $pink;
+  @include mqMax {
+    height: 60px;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    position: fixed;
+    z-index: 999;
+  }
+
+  &__title h1 {
+    font-size: 36px;
+    width: 100%;
+
+    &:hover {
+      opacity: 0.4;
+    }
+    @include mqMax {
+      font-size: 16px;
+      width: 170px;
+    }
+  }
+
+  &__pcNav {
+    color: $red;
+    @include mqmax1040 {
+      display: none;
+    }
+  }
+
+  &__spNav {
+    display: none;
+
+    @include mqmax1040 {
+      display: block;
+      visibility: hidden;
+      pointer-events: auto;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      outline: 1px solid transparent;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 800;
+
+      &.active {
+        visibility: visible;
+      }
+    }
+  }
+
+  &__spNav-wrapper {
+    transition-duration: 0.75s;
+    width: 200vw;
+    height: 200vh;
+    color: $red;
+    background-color: $lightGreen;
+    border-radius: 50%;
+    transition: all 0.4s ease;
+    flex: none;
+    transform: scale(0);
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.active {
+      transform: scale(1);
+      transition-duration: 0.75s;
+      width: 200vw;
+      height: 200vh;
+      color: $red;
+      background-color: $lightGreen;
+      border-radius: 50%;
+      transition: all 0.4s ease;
+      flex: none;
+      backface-visibility: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+  }
+
+  &__list {
+    display: flex;
+  }
+
+  &__item {
+    margin-left: 100px;
+    position: relative;
+
+    @include mqmax1040 {
+      align-items: center;
+      font-size: 27px;
+      margin: 0;
+      margin-top: 61px;
+      display: block;
+    }
+
+    &:hover {
+      opacity: 0.4;
+
+      @include mqMax {
+        opacity: 1;
+      }
+    }
+  }
+
+  &__spnav-list {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  &__openbtn {
+    display: none;
+    z-index: 999;
+
+    @include mqmax1040 {
+      position: absolute;
+      right: 20px;
+      display: block;
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+      overflow: hidden;
+
+      &.active {
+        position: fixed;
+      }
+    }
+  }
+
+  &__openbtn-area {
+    transition: all 0.4s;
+  }
+
+  span {
+    display: inline-block;
+    transition: all 0.4s;
+    position: absolute;
+    left: 14px;
+    height: 3px;
+    border-radius: 2px;
+    background: $pink;
+    width: 45%;
+  }
+
+  span:nth-of-type(1) {
+    top: 15px;
+  }
+
+  span:nth-of-type(2) {
+    top: 23px;
+  }
+
+  span:nth-of-type(3) {
+    top: 31px;
+  }
+
+  &__openbtn {
+    &.active {
+      .siteHeader__openbtn-area {
+        transform: rotateX(360deg);
+      }
+
+      span:nth-of-type(1) {
+        top: 18px;
+        left: 18px;
+        transform: translateY(6px) rotate(-135deg);
+        width: 30%;
+      }
+
+      span:nth-of-type(2) {
+        opacity: 0;
+      }
+
+      span:nth-of-type(3) {
+        top: 30px;
+        left: 18px;
+        transform: translateY(-6px) rotate(135deg);
+        width: 30%;
+      }
+    }
+  }
+}
+
+.kv {
+  position: relative;
+  background-color: $darkPink;
+  width: 100%;
+  height: 994px;
+  position: relative;
+  overflow: hidden;
+
+  @include mqMax {
+    height: 607px;
+  }
+
+  &__illustWrapper {
+    position: relative;
+    width: 809px;
+    height: 809px;
+    margin: 0 auto;
+
+    @include mqMax {
+      width: calc(809px / 2);
+      height: calc(809px / 2);
+    }
+  }
+
+  &__txt {
+    position: absolute;
+    color: #3e0007;
+    font-size: 80px;
+    font-weight: bold;
+    font-family: "Impact", sans-serif;
+    text-align: center;
+    width: 700px;
+    top: 11%;
+    left: calc(50% - 350px);
+
+    @include mqmax1040 {
+      font-size: 56px;
+      top: 18%;
+    }
+
+    @include mqMax {
+      font-size: 32px;
+      width: 300px;
+      top: 20%;
+      left: calc(50% - 150px);
+    }
+  }
+
+  &__pc,
+  &__book,
+  &__cup,
+  &__girl {
+    position: absolute;
+  }
+
+  &__pc {
+    top: 25%;
+    right: 0.5%;
+    z-index: 750;
+
+    @include mqMax {
+      top: 180px;
+      left: 4%;
+    }
+
+    & img {
+      @include mqMax {
+        width: 350px;
+      }
+    }
+  }
+
+  &__book {
+    top: 82.5%;
+    left: 2%;
+    z-index: 750;
+
+    @include mqMax {
+      top: 94%;
+      left: 4%;
+    }
+
+    & img {
+      @include mqMax {
+        width: 100px;
+      }
+    }
+  }
+
+  &__cup {
+    top: 64%;
+    left: 54%;
+    z-index: 750;
+
+    @include mqMax {
+      top: 80%;
+      left: 52%;
+    }
+
+    & img {
+      @include mqMax {
+        width: 200px;
+      }
+    }
+  }
+
+  &__girl {
+    top: 28%;
+    left: 19%;
+    z-index: 700;
+
+    @include mqMax {
+      top: 177px;
+      left: 20.5%;
+    }
+
+    & img {
+      @include mqMax {
+        width: 220px;
+      }
+    }
+  }
+}
+
+.sec01 {
+  position: relative;
+  background-color: #fff;
+  width: 100%;
+  height: 757px;
+  padding-top: 171px;
+
+  @include mqMax {
+    padding-top: 93.5px;
+    height: 522px;
+  }
+
+  &__title {
+    @include text(48px, normal, normal, 0.1em);
+    color: $red;
+    text-align: center;
+    position: relative;
+
+    @include mqMax {
+      font-size: 24px;
+    }
+  }
+
+  &__title h2 {
+    font-family: "Titillium Web", sans-serif;
+  }
+
+  &__title h2:before {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 324px;
+    height: 11px;
+    border-top: 3px dotted $red;
+    top: -11px;
+    left: calc(50% - 162px);
+
+    @include mqMax {
+      width: 234px;
+      left: calc(50% - 122px);
+    }
+  }
+
+  &__title h2:after {
+    content: "";
+    position: absolute;
+    display: inline-block;
+    width: 324px;
+    height: 11px;
+    border-bottom: 3px dotted $red;
+    top: 100%;
+    left: calc(50% - 162px);
+
+    @include mqMax {
+      width: 234px;
+      left: calc(50% - 122px);
+    }
+  }
+
+  &__motto {
+    position: relative;
+    font-family: "Kaisei Opti", serif;
+    @include text(50px, normal, 1.8em, 0.2em);
+    color: $darkPink;
+    text-align: center;
+    margin-top: 83px;
+
+    @include mqMax {
+      font-size: 22px;
+    }
+  }
+
+  &__illust {
+    position: absolute;
+    bottom: 0;
+    left: 68%;
+    z-index: 850;
+    background-size: cover;
+
+    @include mqMax {
+      top: 65%;
+      left: 60%;
+    }
+  }
+
+  &__illust img {
+    width: 304px;
+    height: 304px;
+
+    @include mqMax {
+      width: 124px;
+      height: 124px;
+    }
+  }
+}
+
+.sec02 {
+  width: 100%;
+  background-color: $pink;
+  padding-top: 197.5px;
+  padding-bottom: 160px;
+
+  @include mqMax {
+    padding-top: 60px;
+  }
+
+  &__wrapper {
+    width: 900px;
+    margin: 0 auto;
+
+    @include mqmax1040 {
+      width: 750px;
+    }
+
+    @include mqMax {
+      width: auto;
+    }
+  }
+
+  &__title {
+    @include text(36px, bold, normal, normal);
+    font-family: "Titillium Web", sans-serif;
+    position: relative;
+    z-index: 10;
+
+    @include mqMax {
+      font-size: 24px;
+      margin-left: 5%;
+    }
+  }
+
+  &__title h2 {
+    position: relative;
+    padding-left: 60px;
+    font-family: "Titillium Web";
+    font-weight: bold;
+
+    @include mqMax {
+      width: 90%;
+      padding-left: 25px;
+    }
+  }
+
+  &__title h2:before {
+    content: "01";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    color: $pinkForNumber;
+    @include text(70px, bold, normal, normal);
+    font-family: "Titillium Web";
+    z-index: -1;
+
+    @include mqMax {
+      font-size: 30px;
+    }
+  }
+
+  &__title h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 239.5px;
+    height: 3px;
+    background-color: $pinkForNumber;
+
+    @include mqMax {
+      width: 106.49px;
+    }
+  }
+
+  &__about {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    line-height: 2em;
+
+    @include mqMax {
+      width: 90%;
+      flex-direction: column;
+      margin-left: 5%;
+    }
+  }
+
+  &__aboutPhoto {
+    margin-right: 10%;
+
+    @include mqMax {
+      margin: 0 auto;
+    }
+  }
+
+  &__aboutPhoto img {
+    width: 334px;
+    padding-top: 71.8px;
+  }
+
+  &__nameBox {
+    position: relative;
+
+    @include mqMax {
+      margin-top: 30px;
+    }
+  }
+
+  &__nameBox:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 3px;
+    height: 66px;
+    background-color: $pinkForNumber;
+    top: 7%;
+    left: 0;
+    z-index: 1;
+  }
+
+  &__nameBox h3 {
+    font-size: 24px;
+    line-height: 1.5em;
+    padding-left: 15px;
+  }
+
+  &__nameEn {
+    font-family: "Titillium Web", sans-serif;
+  }
+
+  &__aboutTxt {
+    margin-top: 40px;
+
+    @include mqMax {
+      line-height: normal;
+    }
+  }
+
+  &__aboutTxt p {
+    margin-top: 16px;
+  }
+}
+
+.sec03 {
+  width: 100%;
+  padding-top: 196.5px;
+
+  @include mqMax {
+    padding-top: 60px;
+  }
+
+  &__wrapper {
+    width: 900px;
+    margin: 0 auto;
+
+    @include mqmax1040 {
+      width: 750px;
+    }
+
+    @include mqMax {
+      width: auto;
+    }
+  }
+
+  &__title {
+    @include text(36px, bold, normal, normal);
+    font-family: "Titillium Web", sans-serif;
+    position: relative;
+    z-index: 10;
+
+    @include mqMax {
+      font-size: 24px;
+      margin-left: 5%;
+    }
+  }
+
+  &__title h2 {
+    position: relative;
+    padding-left: 60px;
+    font-family: "Titillium Web";
+    font-weight: bold;
+
+    @include mqMax {
+      width: 90vw;
+      padding-left: 25px;
+    }
+  }
+
+  &__title h2:before {
+    content: "02";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    color: $pinkForNumber;
+    @include text(70px, bold, normal, normal);
+    font-family: "Titillium Web";
+    z-index: -1;
+
+    @include mqMax {
+      font-size: 30px;
+    }
+  }
+
+  &__title h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 239.5px;
+    height: 3px;
+    background-color: $pinkForNumber;
+
+    @include mqMax {
+      width: 106.49px;
+    }
+  }
+
+  &__contentsTitle {
+    font-family: "Titillium Web";
+    @include text(24px, 600, normal, normal);
+    color: $red;
+    margin-top: 56px;
+    margin-bottom: 14px;
+
+    @include mqMax {
+      width: 90vw;
+      margin-left: 5%;
+    }
+  }
+
+  &__webSiteWrapper {
+    max-width: 850px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 0 auto;
+
+    @include mqMax {
+      width: 80%;
+      margin: 0 auto;
+      flex-wrap: nowrap;
+      flex-direction: column;
+      align-items: center;
+    }
+  }
+
+  &__commudephi__sumb,
+  &__movie__sumb,
+  &__suit__sumb,
+  &__cafe__sumb {
+    width: 45%;
+    min-width: 380px;
+    height: 25%;
+    min-height: 250px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    transition: all 0.5s ease-in-out;
+    overflow: hidden;
+
+    @include mqmax1040 {
+      width: 90%;
+      min-width: 300px;
+      height: 260px;
+    }
+
+    @include mqMax {
+      width: 90%;
+      min-width: 300px;
+      height: 260px;
+    }
+
+    &:hover {
+      transform: scale(1.2);
+      background-position: center;
+    }
+  }
+
+  &__commudephi__sumb {
+    background-image: url(../img/commude_sumb.png);
+  }
+  &__movie__sumb {
+    background-image: url(../img/movie_sumb.png);
+  }
+  &__suit__sumb {
+    background-image: url(../img/suit_sumb.png);
+  }
+  &__cafe__sumb {
+    background-image: url(../img/cafe_sumb.png);
+  }
+
+  &__others {
+    margin-top: 80px;
+
+    &__Wrapper{
+      max-width: 850px;
+      height: auto;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+      margin-bottom: 196px;
+  
+      @include mqMax {
+        width: 80%;
+        margin: 0 0 63px 10%;
+        flex-wrap: nowrap;
+        align-items: flex-start
+      }
+    }
+
+    &__github {
+      width: 150px;
+
+      & img {
+        width: 150px;
+
+        @include mqMax {
+          width: 100px;
+        }
+      }
+    }
+
+    &__githubProjects{
+      &__list{
+      margin-left: 5%;
+      @include mqMax{
+        width: 100%;
+      }
+    }
+    &__listItem{
+      list-style: square;
+      font-size: 16px;
+      font-weight:500;
+      margin-top: 16px;
+
+      @include mqMax{
+        font-size: 14px;
+      }
+    }
+  }
+  }
+
+  &__others &__contentsTitle {
+    margin-top: 0;
+  }
+}
+
+.modaal-btn {
+  display: block;
+  margin-top: 10%;
+  overflow: hidden;
+}
+
+.modaal-content-container {
+  overflow: scroll;
+  height: calc(100vh - 120px);
+  background-color: #707070;
+  display: flex;
+  padding: 30px;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+
+  @include mqMax {
+    flex-direction: column;
+    padding-top: 0;
+  }
+}
+
+.modaal-box {
+  &__screenShot {
+    & img {
+      display: block;
+      width: 260px;
+      margin-left: 25%;
+      cursor: pointer;
+
+      @include mqMax {
+        margin: 0 auto;
+        margin-top: 160px;
+      }
+    }
+
+    &__commude {
+      width: 0;
+
+      @include mqMax {
+        margin-top: 160px;
+        margin: 0 auto;
+        display: flex;
+      }
+    }
+  }
+
+  &__txt {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+
+    @include mqmax1040 {
+      width: 40%;
+      margin-left: 40%;
+    }
+
+    @include mqMax {
+      font-size: 14px;
+      position: static;
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+
+  &__detail {
+    line-height: 2em;
+    margin-bottom: 79px;
+    margin-left: 10%;
+
+    &__ttl {
+      font-size: 24px;
+      margin-bottom: 79px;
+
+      @include mqMax {
+        margin-top: 30px;
+      }
+    }
+  }
+
+  &__tool {
+    margin-bottom: 50px;
+    margin-left: 10%;
+
+    &__ttl {
+      font-size: 20px;
+      margin-bottom: 23px;
+    }
+  }
+
+  &__works {
+    color: black;
+    background-color: #fff;
+    font-size: 32px;
+    font-family: "Titillium Web", sans-serif;
+    width: 217px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 40%;
+    cursor: pointer;
+
+    @include mqMax {
+      font-size: 16px;
+      width: calc(217px / 2);
+      margin-left: 60%;
+    }
+  }
+
+  &__screenShot img {
+    margin-left: 3%;
+  }
+}
+
+.sec04 {
+  width: 100%;
+  background-color: $pink;
+  padding-top: 197.5px;
+  padding-bottom: 160px;
+
+  @include mqMax {
+    padding-top: 67.7px;
+    padding-bottom: 118.6px;
+  }
+
+  &__wrapper {
+    width: 900px;
+    margin: 0 auto;
+
+    @include mqmax1040 {
+      width: 750px;
+    }
+
+    @include mqMax {
+      width: auto;
+    }
+  }
+
+  &__title {
+    @include text(36px, bold, normal, normal);
+    font-family: "Titillium Web", sans-serif;
+    position: relative;
+    z-index: 10;
+
+    @include mqMax {
+      font-size: 24px;
+      margin-left: 5%;
+    }
+  }
+
+  &__title h2 {
+    position: relative;
+    padding-left: 60px;
+    font-family: "Titillium Web";
+    font-weight: bold;
+
+    @include mqMax {
+      width: 90vw;
+      padding-left: 25px;
+    }
+  }
+
+  &__title h2:before {
+    content: "03";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    color: $pinkForNumber;
+    @include text(70px, bold, normal, normal);
+    font-family: "Titillium Web";
+    z-index: -1;
+
+    @include mqMax {
+      font-size: 30px;
+    }
+  }
+
+  &__title h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 239.5px;
+    height: 3px;
+    background-color: $pinkForNumber;
+
+    @include mqMax {
+      width: 106.49px;
+    }
+  }
+
+  &__iconWrapper {
+    margin-top: 80px;
+
+    @include mqmax1040 {
+      width: 750px;
+    }
+
+    @include mqMax {
+      width: auto;
+      margin-top: 57px;
+    }
+  }
+
+  &__iconBoxPc1,
+  &__iconBoxPc2,
+  &__iconBox1,
+  &__iconBox2 {
+    display: flex;
+    justify-content: center;
+    gap: 55px;
+
+    @include mqMax {
+      gap: 44.4px;
+      row-gap: 27.5px;
+    }
+  }
+
+  &__iconBoxPc1 {
+    @include mqMax {
+      flex-direction: column;
+    }
+  }
+
+  &__iconBoxPc2 {
+    margin-top: 69.5px;
+
+    @include mqMax {
+      margin-top: 27.5px;
+    }
+  }
+
+  &__icon {
+    width: 80px;
+    height: 80px;
+
+    @include mqMax {
+      width: 69px;
+      height: 69px;
+    }
+  }
+
+  &__skillDetail {
+    padding-top: 10px;
+    text-align: center;
+  }
+}
+
+.sec05 {
+  width: 100%;
+  padding-top: 197.5px;
+  padding-bottom: 160px;
+
+  @include mqMax {
+    padding-top: 60.6px;
+  }
+
+  &__wrapper {
+    width: 900px;
+    margin: 0 auto;
+
+    @include mqmax1040 {
+      width: 750px;
+    }
+
+    @include mqMax {
+      width: auto;
+    }
+  }
+
+  &__title {
+    @include text(36px, bold, normal, normal);
+    font-family: "Titillium Web", sans-serif;
+    position: relative;
+    z-index: 10;
+
+    @include mqMax {
+      padding-left: 5%;
+      font-size: 24px;
+    }
+  }
+
+  &__title h2 {
+    position: relative;
+    padding-left: 60px;
+    font-family: "Titillium Web";
+    font-weight: bold;
+
+    @include mqMax {
+      padding-left: 25px;
+    }
+  }
+
+  &__title h2:before {
+    content: "04";
+    position: absolute;
+    top: 40%;
+    left: 0;
+    transform: translateY(-50%);
+    color: $pinkForNumber;
+    @include text(70px, bold, normal, normal);
+    font-family: "Titillium Web";
+    z-index: -1;
+
+    @include mqMax {
+      font-size: 30px;
+    }
+  }
+
+  &__title h2:after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 239.5px;
+    height: 3px;
+    background-color: $pinkForNumber;
+
+    @include mqMax {
+      width: 125px;
+    }
+  }
+
+  &__contactWrapper {
+    position: relative;
+    width: 90%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    margin-top: 52.5px;
+
+    @include mqMax {
+      width: 90%;
+      margin: 0 auto;
+      margin-top: 30px;
+    }
+
+    &.animate {
+      &::after {
+        animation: bounce 1.5s ease;
+      }
+    }
+  }
+
+  &__contactWrapper:after {
+    position: absolute;
+    content: "";
+    display: block;
+    background-image: url(../img/cat_girl.png);
+    background-size: cover;
+    width: 273px;
+    height: 273px;
+    display: block;
+    top: 77%;
+    left: 0;
+    z-index: 800;
+
+    @include mqmax1040 {
+      left: 0;
+    }
+
+    @include mqMax {
+      width: 132px;
+      height: 132px;
+      top: 100%;
+      right: 64%;
+    }
+  }
+
+  &__txt {
+    font-family: "Titillium Web";
+    @include text(20px, bold, normal, normal);
+    margin-top: 31px;
+    padding-left: 10%;
+
+    @include mqMax {
+      padding-left: 0;
+    }
+  }
+
+  &__contactForm {
+    width: 90%;
+    margin: 0 auto;
+    @include mqMax {
+      width: auto;
+    }
+  }
+
+  &__contactContents {
+    display: flex;
+    justify-content: space-between;
+
+    @include mqMax {
+      width: 93.5%;
+      flex-direction: column;
+    }
+  }
+
+  &__contactContents [type="text"],
+  &__contactContents [type="email"] {
+    width: 75%;
+    border: 1px solid #707070;
+    display: flex;
+
+    @include mqMax {
+      width: 100%;
+    }
+  }
+
+  [type="text"] {
+    width: 40vw;
+  }
+
+  &__name [type="text"] {
+    width: 75%;
+    height: 57px;
+    margin-top: 28px;
+    margin-left: 41px;
+
+    @include mqMax {
+      margin-top: 10px;
+      margin-left: 0;
+      width: 80vw;
+    }
+  }
+
+  [type="email"] {
+    width: 75%;
+    height: 57px;
+    margin-top: 28px;
+    margin-left: 34px;
+
+    @include mqMax {
+      margin-top: 10px;
+      margin-left: 0;
+      width: 80vw;
+    }
+  }
+
+  &__msg__detail {
+    width: 75%;
+    height: 427px;
+    margin-top: 28px;
+    margin-left: 15px;
+    border: 1px solid #000;
+    text-align: start;
+    vertical-align: top;
+    padding-top: 5px;
+    top: 0;
+
+    @include mqMax {
+      margin-top: 10px;
+      margin-left: 0;
+      height: 317px;
+      width: 80vw;
+    }
+  }
+
+  &__submit {
+    width: 80%;
+    display: flex;
+    text-align: center;
+    margin: 0 auto;
+    margin-left: 25%;
+
+    @include mqmax1040 {
+      width: 95%;
+      margin-left: 19%;
+    }
+
+    @include mqMax {
+      width: 90%;
+      margin: 0 auto;
+      padding-left: 0;
+    }
+  }
+
+  &__contactContents [type="submit"] {
+    width: 182px;
+    height: 47px;
+    background-color: $pink;
+    font-family: "Titillium Web";
+    @include text(20px, bold, normal, normal);
+    margin-left: 30%;
+    margin-top: 48px;
+
+    @include mqMax {
+      margin: 0 auto;
+      margin-top: 40px;
+    }
+
+    input::placeholder {
+      opacity: 0.5;
+      display: flex;
+      text-align: left;
+      vertical-align: top;
+    }
+  }
+}
+
+.arrow {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  &__toTop img {
+    width: 50px;
+    position: absolute;
+    position: fixed;
+    top: 90vh;
+    right: 50px;
+    z-index: 9999;
+
+    @include mqMax {
+      display: none;
+    }
+  }
+}
+
+.siteFooter {
+  position: relative;
+  background-color: $lightGreen;
+  width: 100%;
+  height: 340px;
+  @include text(60px, bold, 1.2em, normal);
+  display: flex;
+  align-items: center;
+
+  @include mqMax {
+    height: 140px;
+    font-size: 24px;
+  }
+
+  &__txt {
+    margin: 0 auto;
+    font-family: "Impact", sans-serif;
+    text-align: center;
+    color: #b4636c;
+  }
+
+  &__illust img {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    display: block;
+    bottom: 2%;
+    left: 63%;
+    z-index: 800;
+
+    @include mqMax {
+      width: 111px;
+      height: 111px;
+      left: 65%;
+    }
+  }
+}
